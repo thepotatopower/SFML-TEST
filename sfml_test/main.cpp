@@ -66,18 +66,18 @@ int main()
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 			{
 				sprite.setTextureRect(sf::IntRect(0, 0, 23, 23)); //change sprite according to direction
-				if (!(sprite.getPosition().y == sprite2.getPosition().y + 23 //test implication of pushing sprite2 (not complete)
-					&& (sprite.getPosition().x == sprite2.getPosition().x + 23
-						&& sprite.getPosition().x == sprite2.getPosition().x - 23)))
+				if (sprite.getPosition().y <= sprite2.getPosition().y + 23 //test implementation of pushing sprite2 (not complete)
+					&& (sprite.getPosition().x <= sprite2.getPosition().x + 23
+						&& sprite.getPosition().x >= sprite2.getPosition().x - 23))
 					sprite2.move(sf::Vector2f(0, .1));
 				sprite.move(sf::Vector2f(0, .1));
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			{
 				sprite.setTextureRect(sf::IntRect(89, 118, 23, 23));
-				if (!(sprite.getPosition().y == sprite2.getPosition().y - 23
-					&& (sprite.getPosition().x == sprite2.getPosition().x + 23
-						&& sprite.getPosition().x == sprite2.getPosition().x - 23)))
+				if (sprite.getPosition().y >= sprite2.getPosition().y - 23
+					&& (sprite.getPosition().x <= sprite2.getPosition().x + 23
+						&& sprite.getPosition().x >= sprite2.getPosition().x - 23))
 					sprite2.move(sf::Vector2f(0, -.1));
 				sprite.move(sf::Vector2f(0, -.1));
 			}
@@ -93,18 +93,18 @@ int main()
 					sprite.setTextureRect(sf::IntRect(238, 28, 23, 23));
 				else if (elapsed > 800 && elapsed <= 1000)
 					sprite.setTextureRect(sf::IntRect(388, 28, 23, 23));
-				if (!(sprite.getPosition().x == sprite2.getPosition().x + 23
-					&& (sprite.getPosition().y == sprite2.getPosition().y + 23
-						&& sprite.getPosition().y == sprite2.getPosition().y - 23)))
+				if (sprite.getPosition().x <= sprite2.getPosition().x + 23
+					&& (sprite.getPosition().y <= sprite2.getPosition().y + 23
+						&& sprite.getPosition().y >= sprite2.getPosition().y - 23))
 					sprite2.move(sf::Vector2f(-.1, 0));
 				sprite.move(sf::Vector2f(-.1, 0));
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 			{
 				sprite.setTextureRect(sf::IntRect(328, 128, 23, 23));
-				if (!(sprite.getPosition().x == sprite2.getPosition().x - 23
-					&& (sprite.getPosition().y == sprite2.getPosition().y + 23
-						&& sprite.getPosition().y == sprite2.getPosition().y - 23)))
+				if (sprite.getPosition().x >= sprite2.getPosition().x - 23
+					&& (sprite.getPosition().y <= sprite2.getPosition().y + 23
+						&& sprite.getPosition().y >= sprite2.getPosition().y - 23))
 					sprite2.move(sf::Vector2f(.1, 0));
 				sprite.move(sf::Vector2f(.1, 0));
 			}
