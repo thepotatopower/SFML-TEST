@@ -42,21 +42,21 @@ int main()
 		}
 		if (sf::Keyboard::isKeyPressed)
 		{
-			if (!clock_start)
+			if (!clock_start) //start clock to time movement to allow for smooth sprite animation
 			{
 				clock.restart();
-				clock_start = 1;
+				clock_start = 1; //set counter to indicate clock has started
 			}
-			elapsed = clock.getElapsedTime().asMilliseconds();
-			if (elapsed > 1000)
+			elapsed = clock.getElapsedTime().asMilliseconds(); //get time
+			if (elapsed > 1000) //restart clock if it reaches 1000 milliseconds
 			{
 				clock.restart();
 				elapsed = clock.getElapsedTime().asMilliseconds();
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 			{
-				sprite.setTextureRect(sf::IntRect(0, 0, 23, 23));
-				if (!(sprite.getPosition().y == sprite2.getPosition().y + 23
+				sprite.setTextureRect(sf::IntRect(0, 0, 23, 23)); //change sprite
+				if (!(sprite.getPosition().y == sprite2.getPosition().y + 23 //condition for sprite2 movement (imitate sprite pushing sprite2, not complete)
 					&& (sprite.getPosition().x == sprite2.getPosition().x + 23
 						&& sprite.getPosition().x == sprite2.getPosition().x - 23)))
 					sprite2.move(sf::Vector2f(0, .1));
@@ -73,7 +73,7 @@ int main()
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 			{
-				if (elapsed <= 200)
+				if (elapsed <= 200) //have sprite change depending on how long button has been pressed
 					sprite.setTextureRect(sf::IntRect(358, 28, 23, 23));
 				else if (elapsed > 200 && elapsed <= 400)
 					sprite.setTextureRect(sf::IntRect(298, 28, 23, 23));
@@ -101,8 +101,8 @@ int main()
 		}
 		else
 		{
-			clock.restart();
-			clock_start = 0;
+			clock.restart(); //stop clock if button is released
+			clock_start = 0; 
 		}
 		// Clear screen
 		window.clear();
