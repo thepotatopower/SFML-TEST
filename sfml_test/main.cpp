@@ -66,7 +66,7 @@ int main()
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 			{
 				sprite.setTextureRect(sf::IntRect(0, 0, 23, 23)); //change sprite according to direction
-				if (sprite.getPosition().y <= sprite2.getPosition().y + 23 //test implementation of pushing sprite2 (not complete)
+				if (sprite.getPosition().y >= sprite2.getPosition().y + 23 //test implementation of pushing sprite2 (not complete)
 					&& (sprite.getPosition().x <= sprite2.getPosition().x + 23
 						&& sprite.getPosition().x >= sprite2.getPosition().x - 23))
 					sprite2.move(sf::Vector2f(0, .1));
@@ -75,7 +75,7 @@ int main()
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			{
 				sprite.setTextureRect(sf::IntRect(89, 118, 23, 23));
-				if (sprite.getPosition().y >= sprite2.getPosition().y - 23
+				if (sprite.getPosition().y <= sprite2.getPosition().y - 23
 					&& (sprite.getPosition().x <= sprite2.getPosition().x + 23
 						&& sprite.getPosition().x >= sprite2.getPosition().x - 23))
 					sprite2.move(sf::Vector2f(0, -.1));
