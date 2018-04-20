@@ -8,14 +8,19 @@ int main()
 	sf::Texture texture;
 	if (!texture.loadFromFile("thelegendofzeldalinktothepast_link_sheet.png"))
 		return EXIT_FAILURE;
+
 	sf::Sprite sprite(texture), sprite2(texture);
 	sprite.setTextureRect(sf::IntRect(0, 0, 23, 23));
+	sprite.setPosition(380, 50);
+
 	sprite2.setTextureRect(sf::IntRect(355, 212, 30, 60));
 	sprite2.setPosition(100, 100);
+
 	sf::Keyboard keyboard;
 	sf::View view;
-	bool pressed = 0, clock_start = 0;
 	sf::Clock clock;
+
+	bool pressed = 0, clock_start = 0;
 	float x, y;
 	double elapsed = 0;
 
@@ -24,6 +29,7 @@ int main()
 	sf::Vector2u TextureSize;
 	sf::Vector2u WindowSize;
 	sf::Texture texture1;
+
 	if (!texture1.loadFromFile("maps.png"))
 		return EXIT_FAILURE;
 	else
@@ -49,6 +55,10 @@ int main()
 			// Close window : exit
 			if (event.type == sf::Event::Closed)
 				window.close();
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) // Closes the game when you click escape
+			{
+				window.close();
+			}
 		}
 		if (sf::Keyboard::isKeyPressed) 
 		{

@@ -1,15 +1,15 @@
 ﻿  main.cpp
-c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(53): warning C4551: function call missing argument list
-c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(72): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(73): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(62): warning C4551: function call missing argument list
 c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(81): warning C4305: 'argument': truncation from 'double' to 'float'
 c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(82): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(99): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(100): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(90): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(91): warning C4305: 'argument': truncation from 'double' to 'float'
 c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(108): warning C4305: 'argument': truncation from 'double' to 'float'
 c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(109): warning C4305: 'argument': truncation from 'double' to 'float'
-c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(15): warning C4101: 'keyboard': unreferenced local variable
-c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(19): warning C4101: 'y': unreferenced local variable
-c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(19): warning C4101: 'x': unreferenced local variable
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(117): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(118): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(19): warning C4101: 'keyboard': unreferenced local variable
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(24): warning C4101: 'y': unreferenced local variable
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(24): warning C4101: 'x': unreferenced local variable
   sfml_test.vcxproj -> C:\Users\travi\Desktop\SFML-TEST\x64\Debug\sfml_test.exe
   sfml_test.vcxproj -> C:\Users\travi\Desktop\SFML-TEST\x64\Debug\sfml_test.pdb (Full PDB)
