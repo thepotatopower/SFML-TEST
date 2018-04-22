@@ -20,7 +20,7 @@ int main()
 
 	// creating hitbox for going to next map
 	Rec r1(*(new sf::Vector2f(window.getSize().x*.05, window.getSize().y*0.93)),
-		sf::Color::Green,
+		sf::Color::Transparent,
 		*(new sf::Vector2f(window.getSize().x*0.10, window.getSize().y*0.07)));
 
 

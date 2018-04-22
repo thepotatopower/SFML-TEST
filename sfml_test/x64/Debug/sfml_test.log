@@ -1,2 +1,19 @@
-﻿  sfml_test.vcxproj -> C:\Users\travi\Desktop\SFML-TEST\x64\Debug\sfml_test.exe
+﻿  Rectangle.cpp
+  main.cpp
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(22): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(24): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(84): warning C4551: function call missing argument list
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(103): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(104): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(112): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(113): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(130): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(131): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(139): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(140): warning C4305: 'argument': truncation from 'double' to 'float'
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(36): warning C4101: 'keyboard': unreferenced local variable
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(41): warning C4101: 'y': unreferenced local variable
+c:\users\travi\desktop\sfml-test\sfml_test\main.cpp(41): warning C4101: 'x': unreferenced local variable
+  Generating Code...
+  sfml_test.vcxproj -> C:\Users\travi\Desktop\SFML-TEST\x64\Debug\sfml_test.exe
   sfml_test.vcxproj -> C:\Users\travi\Desktop\SFML-TEST\x64\Debug\sfml_test.pdb (Full PDB)
