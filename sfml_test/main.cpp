@@ -1,5 +1,8 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include "Rectangle.h"
+#include <iostream>
+using std::cout;
 int main()
 {
 	// Create the main window
@@ -9,12 +12,26 @@ int main()
 	if (!texture.loadFromFile("thelegendofzeldalinktothepast_link_sheet.png"))
 		return EXIT_FAILURE;
 
+	sf::Image image;
+	if (!image.loadFromFile("map2.png"))
+	{
+		return EXIT_FAILURE;
+	}
+
+	// creating hitbox for going to next map
+	Rec r1(*(new sf::Vector2f(window.getSize().x*.05, window.getSize().y*0.93)),
+		sf::Color::Green,
+		*(new sf::Vector2f(window.getSize().x*0.10, window.getSize().y*0.07)));
+
+
 	sf::Sprite sprite(texture), sprite2(texture);
 	sprite.setTextureRect(sf::IntRect(0, 0, 23, 23));
 	sprite.setPosition(380, 50);
 
 	sprite2.setTextureRect(sf::IntRect(355, 212, 30, 60));
 	sprite2.setPosition(100, 100);
+
+
 
 	sf::Keyboard keyboard;
 	sf::View view;
@@ -42,10 +59,8 @@ int main()
 
 		background.setTexture(texture1);
 		background.setScale(Scalex, Scaley);
-
 	}
 	//creating background END
-
 	while (window.isOpen())
 	{
 		// Process events
@@ -60,7 +75,13 @@ int main()
 				window.close();
 			}
 		}
-		if (sf::Keyboard::isKeyPressed) 
+		if ((sprite.getPosition().x >= r1.getPosition().x && sprite.getPosition().x <= (r1.getPosition().x + window.getSize().x*.05 )) // puts you to next level when you hit the stairs
+			&& (sprite.getPosition().y >= r1.getPosition().y && sprite.getPosition().y <= (r1.getPosition().y + window.getSize().y*0.93)))
+		{
+			texture1.update(image); // updates the map
+			sprite.setPosition(380, 50); // puts sprite back in original positon
+		}
+		if (sf::Keyboard::isKeyPressed)
 		{
 			if (!clock_start) //start clock when key is pressed
 			{
@@ -130,6 +151,7 @@ int main()
 		window.draw(background); // draws the background
 		window.draw(sprite);
 		window.draw(sprite2);
+		window.draw(r1);
 		//// Draw the string
 		//window.draw(text);
 		// Update the window
