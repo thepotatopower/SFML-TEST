@@ -1,5 +1,6 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include "gSprite.h"
 #include "Rectangle.h"
 #include <iostream>
 using std::cout;
@@ -23,13 +24,12 @@ int main()
 		sf::Color::Transparent,
 		*(new sf::Vector2f(window.getSize().x*0.10, window.getSize().y*0.07)));
 
-
-	sf::Sprite sprite(texture), sprite2(texture);
-	sprite.setTextureRect(sf::IntRect(0, 0, 23, 23));
-	sprite.setPosition(380, 50);
-
-	sprite2.setTextureRect(sf::IntRect(355, 212, 30, 60));
-	sprite2.setPosition(100, 100);
+	//initialize sprites
+	gSprite sprite1(23, 23, texture), sprite2(30, 60, texture);
+	sprite1.sprite.setTextureRect(sf::IntRect(0, 0, 23, 23));
+	sprite1.sprite.setPosition(380, 50);
+	sprite2.sprite.setTextureRect(sf::IntRect(355, 212, 30, 60));
+	sprite2.sprite.setPosition(100, 100);
 	/////////
 
 
@@ -75,11 +75,11 @@ int main()
 				window.close();
 			}
 		}
-		if ((sprite.getPosition().x >= r1.getPosition().x && sprite.getPosition().x <= (r1.getPosition().x + window.getSize().x*.05 )) // puts you to next level when you hit the stairs
-			&& (sprite.getPosition().y >= r1.getPosition().y && sprite.getPosition().y <= (r1.getPosition().y + window.getSize().y*0.93)))
+		if ((sprite1.sprite.getPosition().x >= r1.getPosition().x && sprite1.sprite.getPosition().x <= (r1.getPosition().x + window.getSize().x*.05 )) // puts you to next level when you hit the stairs
+			&& (sprite1.sprite.getPosition().y >= r1.getPosition().y && sprite1.sprite.getPosition().y <= (r1.getPosition().y + window.getSize().y*0.93)))
 		{
 			texture1.update(image); // updates the map
-			sprite.setPosition(380, 50); // puts sprite back in original positon
+			sprite1.sprite.setPosition(380, 50); // puts sprite back in original positon
 		}
 		if (sf::Keyboard::isKeyPressed)
 		{
@@ -96,48 +96,40 @@ int main()
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 			{
-				sprite.setTextureRect(sf::IntRect(0, 0, 23, 23)); //change sprite according to direction
-				if (sprite.getPosition().y >= sprite2.getPosition().y + 23 //test implementation of pushing sprite2 (not complete)
-					&& (sprite.getPosition().x <= sprite2.getPosition().x + 23
-						&& sprite.getPosition().x >= sprite2.getPosition().x - 23))
-					sprite2.move(sf::Vector2f(0, .1));
-				sprite.move(sf::Vector2f(0, .1));
+				sprite1.sprite.setTextureRect(sf::IntRect(0, 0, 23, 23)); //change sprite according to direction
+				if (hitInd(sprite1, sprite2, 's'))
+					sprite2.sprite.move(sf::Vector2f(0, .1));
+				sprite1.sprite.move(sf::Vector2f(0, .1));
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			{
-				sprite.setTextureRect(sf::IntRect(89, 118, 23, 23));
-				if (sprite.getPosition().y <= sprite2.getPosition().y - 23
-					&& (sprite.getPosition().x <= sprite2.getPosition().x + 23
-						&& sprite.getPosition().x >= sprite2.getPosition().x - 23))
-					sprite2.move(sf::Vector2f(0, -.1));
-				sprite.move(sf::Vector2f(0, -.1));
+				sprite1.sprite.setTextureRect(sf::IntRect(89, 118, 23, 23));
+				if (hitInd(sprite1, sprite2, 'w'))
+					sprite2.sprite.move(sf::Vector2f(0, -.1));
+				sprite1.sprite.move(sf::Vector2f(0, -.1));
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 			{
 				if (elapsed <= 200) //change sprite animation in accordance to how much time has passed since button has been pressed
-					sprite.setTextureRect(sf::IntRect(358, 28, 23, 23));
+					sprite1.sprite.setTextureRect(sf::IntRect(358, 28, 23, 23));
 				else if (elapsed > 200 && elapsed <= 400)
-					sprite.setTextureRect(sf::IntRect(298, 28, 23, 23));
+					sprite1.sprite.setTextureRect(sf::IntRect(298, 28, 23, 23));
 				else if (elapsed > 400 && elapsed <= 600)
-					sprite.setTextureRect(sf::IntRect(268, 28, 23, 23));
+					sprite1.sprite.setTextureRect(sf::IntRect(268, 28, 23, 23));
 				else if (elapsed > 600 && elapsed <= 800)
-					sprite.setTextureRect(sf::IntRect(238, 28, 23, 23));
+					sprite1.sprite.setTextureRect(sf::IntRect(238, 28, 23, 23));
 				else if (elapsed > 800 && elapsed <= 1000)
-					sprite.setTextureRect(sf::IntRect(388, 28, 23, 23));
-				if (sprite.getPosition().x <= sprite2.getPosition().x + 23
-					&& (sprite.getPosition().y <= sprite2.getPosition().y + 23
-						&& sprite.getPosition().y >= sprite2.getPosition().y - 23))
-					sprite2.move(sf::Vector2f(-.1, 0));
-				sprite.move(sf::Vector2f(-.1, 0));
+					sprite1.sprite.setTextureRect(sf::IntRect(388, 28, 23, 23));
+				if (hitInd(sprite1, sprite2, 'a'))
+					sprite2.sprite.move(sf::Vector2f(-.1, 0));
+				sprite1.sprite.move(sf::Vector2f(-.1, 0));
 			}
 			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 			{
-				sprite.setTextureRect(sf::IntRect(328, 128, 23, 23));
-				if (sprite.getPosition().x >= sprite2.getPosition().x - 23
-					&& (sprite.getPosition().y <= sprite2.getPosition().y + 23
-						&& sprite.getPosition().y >= sprite2.getPosition().y - 23))
-					sprite2.move(sf::Vector2f(.1, 0));
-				sprite.move(sf::Vector2f(.1, 0));
+				sprite1.sprite.setTextureRect(sf::IntRect(328, 118, 23, 23));
+				if (hitInd(sprite1, sprite2, 'd'))
+					sprite2.sprite.move(sf::Vector2f(.1, 0));
+				sprite1.sprite.move(sf::Vector2f(.1, 0));
 			}
 		}
 		else
@@ -149,8 +141,8 @@ int main()
 		window.clear();
 		// Draw the sprite
 		window.draw(background); // draws the background
-		window.draw(sprite);
-		window.draw(sprite2);
+		window.draw(sprite1.sprite);
+		window.draw(sprite2.sprite);
 		window.draw(r1);
 		//// Draw the string
 		//window.draw(text);
