@@ -23,6 +23,9 @@ int main()
 	Rec r1(*(new sf::Vector2f(window.getSize().x*.05, window.getSize().y*0.93)),
 		sf::Color::Transparent,
 		*(new sf::Vector2f(window.getSize().x*0.10, window.getSize().y*0.07)));
+	Rec attack(sf::Vector2f(14, 22), 
+		sf::Color::Transparent,
+		sf::Vector2f(0, 0));
 
 	//initialize sprites
 	gSprite sprite1(23, 23, texture), sprite2(30, 60, texture);
@@ -90,7 +93,7 @@ int main()
 			if (attacking && !clock_start)
 			{
 				clock_start = 1;
-
+				
 			}
 
 		}
@@ -119,8 +122,8 @@ int main()
 				{
 					sprite1.sprite.setTextureRect(sf::IntRect(0, 0, 23, 23)); //change sprite according to direction
 					if (hitInd(sprite1, sprite2, 's'))
-						sprite2.sprite.move(sf::Vector2f(0, Scaley / 600));
-					sprite1.sprite.move(sf::Vector2f(0, Scaley / 600));
+						sprite2.sprite.move(sf::Vector2f(0, .1));
+					sprite1.sprite.move(sf::Vector2f(0, .1));
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 				{
