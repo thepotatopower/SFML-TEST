@@ -43,6 +43,7 @@ int main()
 	bool freeMove = 1, clock_start = 0, attacking = 0;
 	float x, y;
 	double elapsed = 0;
+	char orientation = 0; //'w' is up, 'a' is left, 's' is down, 'd' is right
 
 	// This creates the background BEGINNING
 	sf::Sprite background;
@@ -97,8 +98,7 @@ int main()
 			}
 
 		}
-		if ((sprite1.sprite.getPosition().x >= r1.getPosition().x && sprite1.sprite.getPosition().x <= (r1.getPosition().x + window.getSize().x*.05 )) // puts you to next level when you hit the stairs
-			&& (sprite1.sprite.getPosition().y >= r1.getPosition().y && sprite1.sprite.getPosition().y <= (r1.getPosition().y + window.getSize().y*0.93)))
+		if (hitInd(sprite1, r1, orientation)) // puts you to next level when you hit the stairs
 		{
 			texture1.update(image); // updates the map
 			sprite1.sprite.setPosition(380, 50); // puts sprite back in original positon
@@ -120,6 +120,7 @@ int main()
 				}
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 				{
+					orientation = 's';
 					sprite1.sprite.setTextureRect(sf::IntRect(0, 0, 23, 23)); //change sprite according to direction
 					if (hitInd(sprite1, sprite2, 's'))
 						sprite2.sprite.move(sf::Vector2f(0, .1));
@@ -127,6 +128,7 @@ int main()
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 				{
+					orientation = 'w';
 					sprite1.sprite.setTextureRect(sf::IntRect(89, 118, 23, 23));
 					if (hitInd(sprite1, sprite2, 'w'))
 						sprite2.sprite.move(sf::Vector2f(0, -.1));
@@ -134,6 +136,7 @@ int main()
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 				{
+					orientation = 'a';
 					if (elapsed <= 200) //change sprite animation in accordance to how much time has passed since button has been pressed
 						sprite1.sprite.setTextureRect(sf::IntRect(358, 28, 23, 23));
 					else if (elapsed > 200 && elapsed <= 400)
@@ -150,6 +153,7 @@ int main()
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 				{
+					orientation = 'd';
 					sprite1.sprite.setTextureRect(sf::IntRect(328, 118, 23, 23));
 					if (hitInd(sprite1, sprite2, 'd'))
 						sprite2.sprite.move(sf::Vector2f(.1, 0));

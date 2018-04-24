@@ -63,3 +63,44 @@ bool hitInd(gSprite sprite1, gSprite sprite2, char direction)
 	}
 	return hit;
 }
+
+bool hitInd(gSprite sprite, Rec rec, char direction)
+{
+	bool hit = 0;
+	if (direction == 'w') //up, checks if sprite hits bottom of rec
+	{
+		if (sprite.sprite.getPosition().y <= rec.getPosition().y + rec.getSize().y + 1 &&
+			sprite.sprite.getPosition().y > rec.getPosition().y &&
+			//!hitInd(sprite, rec, 'a') && !hitInd(sprite, rec, 'd') &&
+			sprite.sprite.getPosition().x > rec.getPosition().x - sprite.width &&
+			sprite.sprite.getPosition().x < rec.getPosition().x + rec.getSize().x)
+			hit = 1;
+	}
+	else if (direction == 'a') //left, checks if sprite hits right of rec
+	{
+		if (sprite.sprite.getPosition().x > rec.getPosition().x &&
+			sprite.sprite.getPosition().x <= rec.getPosition().x + rec.getSize().x + 1 &&
+			//	!hitInd(sprite, rec, 'w') && !hitInd(sprite, rec, 's') &&
+			sprite.sprite.getPosition().y > rec.getPosition().y - sprite.height &&
+			sprite.sprite.getPosition().y < rec.getPosition().y + rec.getSize().y)
+			hit = 1;
+	}
+	else if (direction == 's') //down, checks if sprite hits top of rec
+	{
+		if (sprite.sprite.getPosition().y >= rec.getPosition().y - sprite.height - 1 &&
+			sprite.sprite.getPosition().y < rec.getPosition().y &&
+			//	!hitInd(sprite, rec, 'a') && !hitInd(sprite, rec, 'd') &&
+			sprite.sprite.getPosition().x > rec.getPosition().x - sprite.width &&
+			sprite.sprite.getPosition().x < rec.getPosition().x + rec.getSize().x)
+			hit = 1;
+	}
+	else if (direction == 'd') //right, checks if sprite hits left of rec
+	{
+		if (sprite.sprite.getPosition().x < rec.getPosition().x &&
+			sprite.sprite.getPosition().x >= rec.getPosition().x - sprite.width - 1 &&
+			sprite.sprite.getPosition().y > rec.getPosition().y - sprite.height &&
+			sprite.sprite.getPosition().y < rec.getPosition().y + rec.getSize().y)
+			hit = 1;
+	}
+	return hit;
+}
