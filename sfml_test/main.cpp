@@ -47,10 +47,11 @@ int main()
 	sf::View view;
 	sf::Clock clock;
 
+	sf::Thread atk(&atkAnimate, sprite1);
 	bool freeMove = 1, clock_start = 0, attacking = 0;
 	float x, y;
 	double elapsed = 0;
-	char orientation = 0; //'w' is up, 'a' is left, 's' is down, 'd' is right
+	char orientation = 's'; //'w' is up, 'a' is left, 's' is down, 'd' is right
 
 	while (window.isOpen())
 	{
@@ -65,28 +66,28 @@ int main()
 			{
 				window.close();
 			}
-			if (!attacking && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) //attack button
-			{
-				attacking = 1;
-				freeMove = 0;
-				clock.restart();
-				if (orientation = 's')
-				{
-					attack.setRotation(0);
-					attack.setPosition(sprite1.sprite.getPosition().x, sprite1.sprite.getPosition().y + sprite1.height);
-				}
-			}
+			//if (!attacking && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) //attack button
+			//{
+			//	attacking = 1;
+			//	freeMove = 0;
+			//	clock.restart();
+			//	if (orientation = 's')
+			//	{
+			//		attack.setRotation(270);
+			//		attack.setPosition(sprite1.sprite.getPosition().x, sprite1.sprite.getPosition().y + sprite1.height);
+			//	}
+			//}
 			if (attacking)
 			{
-				if (clock.getElapsedTime().asMilliseconds() > 500)
+				if (clock.getElapsedTime().asMilliseconds() > 1)
 				{
 					attacking = 0;
 					freeMove = 1;
 				}
-				/*if (hitInd(sprite1, attack))
+				if (hitInd(sprite1, attack))
 				{
 					sprite2.sprite.move(0, 5);
-				}*/
+				}
 			}
 		}
 
@@ -156,6 +157,21 @@ int main()
 						if (hitInd(sprite1, sprite2, orientation))
 							sprite2.sprite.move(sf::Vector2f(.1, 0));
 						sprite1.sprite.move(sf::Vector2f(.1, 0));
+					}
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+				{
+					if (sprite1.freeMove && !sprite1.attacking)
+					{
+						sprite1.attacking = 1;
+						freeMove = 0;
+						clock.restart();
+						if (orientation == 's')
+						{
+							attack.setRotation(0);
+							attack.setPosition(sf::Vector2f(sprite1.sprite.getPosition().x, sprite1.sprite.getPosition().y + sprite1.height));
+						}
+						atk.launch();
 					}
 				}
 			}

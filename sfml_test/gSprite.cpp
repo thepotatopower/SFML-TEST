@@ -115,3 +115,14 @@ bool hitInd(gSprite sprite, sf::RectangleShape rec)
 	else
 		return false;
 }
+
+void atkAnimate(gSprite &sprite)
+{
+	sf::Clock clock;
+	while (clock.getElapsedTime().asMilliseconds() > 500)
+	{
+
+	}
+	sprite.attacking = 0;
+	sprite.freeMove = 1;
+}
