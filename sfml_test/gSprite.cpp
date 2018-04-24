@@ -104,3 +104,14 @@ bool hitInd(gSprite sprite, Rec rec, char direction)
 	}
 	return hit;
 }
+
+bool hitInd(gSprite sprite, Rec rec)
+{
+	if (sprite.sprite.getPosition().x >= rec.getPosition().x - sprite.width &&
+		sprite.sprite.getPosition().x <= rec.getPosition().x + sprite.width &&
+		sprite.sprite.getPosition().y >= rec.getPosition().y - sprite.height &&
+		sprite.sprite.getPosition().y <= rec.getPosition().y + sprite.height)
+		return true;
+	else
+		return false;
+}

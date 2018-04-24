@@ -29,9 +29,9 @@ int main()
 	if (!texture.loadFromFile("thelegendofzeldalinktothepast_link_sheet.png"))
 		return EXIT_FAILURE;
 
-	Rec attack(sf::Vector2f(14, 22), 
-		sf::Color::Transparent,
-		sf::Vector2f(0, 0));
+	Rec attack(*(new sf::Vector2f(16, 22)),
+		sf::Color::Green,
+		*(new sf::Vector2f(0, 0)));
 	/////////////////
 
 	//initialize sprites
@@ -69,12 +69,24 @@ int main()
 			{
 				attacking = 1;
 				freeMove = 0;
-				//if (sprite1.sprite.getTextureRect().left == 0)
-
+				clock.restart();
+				if (orientation = 's')
+				{
+					attack.setRotation(0);
+					attack.setPosition(sprite1.sprite.getPosition().x, sprite1.sprite.getPosition().y + sprite1.height);
+				}
 			}
-			if (attacking && !clock_start)
+			if (attacking)
 			{
-				clock_start = 1;
+				if (clock.getElapsedTime().asMilliseconds() > 500)
+				{
+					attacking = 0;
+					freeMove = 1;
+				}
+				if (hitInd(sprite1, attack))
+				{
+					sprite2.sprite.move(0, 5);
+				}
 			}
 		}
 
@@ -173,6 +185,7 @@ int main()
 
 		window.draw(sprite1.sprite);
 		window.draw(sprite2.sprite);
+		window.draw(attack);
 		//// Draw the string
 		//window.draw(text);
 		// Update the window
