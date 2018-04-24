@@ -15,5 +15,5 @@ public:
 };
 
 bool hitInd(gSprite sprite1, gSprite sprite2, char direction); //'w' for up, 'a' for left, 's' for down, 'd' for right
-bool hitInd(gSprite sprite, Rec rec, char direction);
-bool hitInd(gSprite sprite, Rec rec);
+bool hitInd(gSprite sprite, sf::RectangleShape rec, char direction);
+bool hitInd(gSprite sprite, sf::RectangleShape rec);

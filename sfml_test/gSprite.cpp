@@ -64,7 +64,7 @@ bool hitInd(gSprite sprite1, gSprite sprite2, char direction)
 	return hit;
 }
 
-bool hitInd(gSprite sprite, Rec rec, char direction)
+bool hitInd(gSprite sprite, sf::RectangleShape rec, char direction)
 {
 	bool hit = 0;
 	if (direction == 'w') //up, checks if sprite hits bottom of rec
@@ -105,7 +105,7 @@ bool hitInd(gSprite sprite, Rec rec, char direction)
 	return hit;
 }
 
-bool hitInd(gSprite sprite, Rec rec)
+bool hitInd(gSprite sprite, sf::RectangleShape rec)
 {
 	if (sprite.sprite.getPosition().x >= rec.getPosition().x - sprite.width &&
 		sprite.sprite.getPosition().x <= rec.getPosition().x + sprite.width &&

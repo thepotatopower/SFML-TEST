@@ -29,10 +29,10 @@ int main()
 	if (!texture.loadFromFile("thelegendofzeldalinktothepast_link_sheet.png"))
 		return EXIT_FAILURE;
 
-	Rec attack(*(new sf::Vector2f(16, 22)),
-		sf::Color::Green,
-		*(new sf::Vector2f(0, 0)));
-	/////////////////
+	sf::RectangleShape attack;
+	attack.setSize(sf::Vector2f(16, 22));
+	attack.setFillColor(sf::Color::Green);
+	attack.setPosition(0, 0);
 
 	//initialize sprites
 	gSprite sprite1(23, 23, texture), sprite2(30, 60, texture);
@@ -83,10 +83,10 @@ int main()
 					attacking = 0;
 					freeMove = 1;
 				}
-				if (hitInd(sprite1, attack))
+				/*if (hitInd(sprite1, attack))
 				{
 					sprite2.sprite.move(0, 5);
-				}
+				}*/
 			}
 		}
 
@@ -111,7 +111,7 @@ int main()
 					{
 						orientation = 's';
 						sprite1.sprite.setTextureRect(sf::IntRect(0, 0, 23, 23)); //change sprite according to direction
-						if (hitInd(sprite1, sprite2, 's'))
+						if (hitInd(sprite1, sprite2, orientation))
 							sprite2.sprite.move(sf::Vector2f(0, .1));
 						sprite1.sprite.move(sf::Vector2f(0, .1));
 					}
@@ -122,7 +122,7 @@ int main()
 					{
 						orientation = 'w';
 						sprite1.sprite.setTextureRect(sf::IntRect(89, 118, 23, 23));
-						if (hitInd(sprite1, sprite2, 'w'))
+						if (hitInd(sprite1, sprite2, orientation))
 							sprite2.sprite.move(sf::Vector2f(0, -.1));
 						sprite1.sprite.move(sf::Vector2f(0, -.1));
 					}
@@ -142,7 +142,7 @@ int main()
 							sprite1.sprite.setTextureRect(sf::IntRect(238, 28, 23, 23));
 						else if (elapsed > 800 && elapsed <= 1000)
 							sprite1.sprite.setTextureRect(sf::IntRect(388, 28, 23, 23));
-						if (hitInd(sprite1, sprite2, 'a'))
+						if (hitInd(sprite1, sprite2, orientation))
 							sprite2.sprite.move(sf::Vector2f(-.1, 0));
 						sprite1.sprite.move(sf::Vector2f(-.1, 0));
 					}
@@ -153,7 +153,7 @@ int main()
 					{
 						orientation = 'd';
 						sprite1.sprite.setTextureRect(sf::IntRect(328, 118, 23, 23));
-						if (hitInd(sprite1, sprite2, 'd'))
+						if (hitInd(sprite1, sprite2, orientation))
 							sprite2.sprite.move(sf::Vector2f(.1, 0));
 						sprite1.sprite.move(sf::Vector2f(.1, 0));
 					}
