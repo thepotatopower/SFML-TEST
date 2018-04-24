@@ -7,7 +7,7 @@ class gSprite
 public:
 	gSprite(void);
 	gSprite(const gSprite &sprite);
-	gSprite(int height, int width, sf::Texture &texture);
+	gSprite(int width, int height, sf::Texture &texture);
 	int height;
 	int width;
 	Sprite sprite;
