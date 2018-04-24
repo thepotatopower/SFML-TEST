@@ -37,7 +37,7 @@ int main()
 	sf::View view;
 	sf::Clock clock;
 
-	bool pressed = 0, clock_start = 0;
+	bool freeMove = 1, clock_start = 0, attacking = 0;
 	float x, y;
 	double elapsed = 0;
 
@@ -60,9 +60,15 @@ int main()
 		background.setTexture(texture1);
 		background.setScale(Scalex, Scaley);
 	}
+
+	/*view.reset(sf::FloatRect(0, 0, 800, 600));
+	view.setSize(800, 600);
+	view.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));*/
 	//creating background END
 	while (window.isOpen())
 	{
+		float Scalex = (float)WindowSize.x / TextureSize.x;
+		float Scaley = (float)WindowSize.y / TextureSize.y;
 		// Process events
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -74,6 +80,19 @@ int main()
 			{
 				window.close();
 			}
+			if (!attacking && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) //attack button
+			{
+				attacking = 1;
+				freeMove = 0;
+				//if (sprite1.sprite.getTextureRect().left == 0)
+
+			}
+			if (attacking && !clock_start)
+			{
+				clock_start = 1;
+
+			}
+
 		}
 		if ((sprite1.sprite.getPosition().x >= r1.getPosition().x && sprite1.sprite.getPosition().x <= (r1.getPosition().x + window.getSize().x*.05 )) // puts you to next level when you hit the stairs
 			&& (sprite1.sprite.getPosition().y >= r1.getPosition().y && sprite1.sprite.getPosition().y <= (r1.getPosition().y + window.getSize().y*0.93)))
@@ -83,59 +102,62 @@ int main()
 		}
 		if (sf::Keyboard::isKeyPressed)
 		{
-			if (!clock_start) //start clock when key is pressed
+			if (freeMove) //only move if freeMove is true
+			{
+				if (!clock_start) //start clock when key is pressed
+				{
+					clock.restart();
+					clock_start = 1; //set counter to indicate clock has started
+				}
+				elapsed = clock.getElapsedTime().asMilliseconds();
+				if (elapsed > 1000) //measure time in increments of 1000 milliseconds
+				{
+					clock.restart(); //restart clock if time passes 1000 milliseconds
+					elapsed = clock.getElapsedTime().asMilliseconds();
+				}
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+				{
+					sprite1.sprite.setTextureRect(sf::IntRect(0, 0, 23, 23)); //change sprite according to direction
+					if (hitInd(sprite1, sprite2, 's'))
+						sprite2.sprite.move(sf::Vector2f(0, Scaley / 600));
+					sprite1.sprite.move(sf::Vector2f(0, Scaley / 600));
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+				{
+					sprite1.sprite.setTextureRect(sf::IntRect(89, 118, 23, 23));
+					if (hitInd(sprite1, sprite2, 'w'))
+						sprite2.sprite.move(sf::Vector2f(0, -.1));
+					sprite1.sprite.move(sf::Vector2f(0, -.1));
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+				{
+					if (elapsed <= 200) //change sprite animation in accordance to how much time has passed since button has been pressed
+						sprite1.sprite.setTextureRect(sf::IntRect(358, 28, 23, 23));
+					else if (elapsed > 200 && elapsed <= 400)
+						sprite1.sprite.setTextureRect(sf::IntRect(298, 28, 23, 23));
+					else if (elapsed > 400 && elapsed <= 600)
+						sprite1.sprite.setTextureRect(sf::IntRect(268, 28, 23, 23));
+					else if (elapsed > 600 && elapsed <= 800)
+						sprite1.sprite.setTextureRect(sf::IntRect(238, 28, 23, 23));
+					else if (elapsed > 800 && elapsed <= 1000)
+						sprite1.sprite.setTextureRect(sf::IntRect(388, 28, 23, 23));
+					if (hitInd(sprite1, sprite2, 'a'))
+						sprite2.sprite.move(sf::Vector2f(-.1, 0));
+					sprite1.sprite.move(sf::Vector2f(-.1, 0));
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+				{
+					sprite1.sprite.setTextureRect(sf::IntRect(328, 118, 23, 23));
+					if (hitInd(sprite1, sprite2, 'd'))
+						sprite2.sprite.move(sf::Vector2f(.1, 0));
+					sprite1.sprite.move(sf::Vector2f(.1, 0));
+				}
+			}
+			else
 			{
 				clock.restart();
-				clock_start = 1; //set counter to indicate clock has started
+				clock_start = 0; //end clock if button is released
 			}
-			elapsed = clock.getElapsedTime().asMilliseconds();
-			if (elapsed > 1000) //measure time in increments of 1000 milliseconds
-			{
-				clock.restart(); //restart clock if time passes 1000 milliseconds
-				elapsed = clock.getElapsedTime().asMilliseconds();
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-			{
-				sprite1.sprite.setTextureRect(sf::IntRect(0, 0, 23, 23)); //change sprite according to direction
-				if (hitInd(sprite1, sprite2, 's'))
-					sprite2.sprite.move(sf::Vector2f(0, .1));
-				sprite1.sprite.move(sf::Vector2f(0, .1));
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-			{
-				sprite1.sprite.setTextureRect(sf::IntRect(89, 118, 23, 23));
-				if (hitInd(sprite1, sprite2, 'w'))
-					sprite2.sprite.move(sf::Vector2f(0, -.1));
-				sprite1.sprite.move(sf::Vector2f(0, -.1));
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-			{
-				if (elapsed <= 200) //change sprite animation in accordance to how much time has passed since button has been pressed
-					sprite1.sprite.setTextureRect(sf::IntRect(358, 28, 23, 23));
-				else if (elapsed > 200 && elapsed <= 400)
-					sprite1.sprite.setTextureRect(sf::IntRect(298, 28, 23, 23));
-				else if (elapsed > 400 && elapsed <= 600)
-					sprite1.sprite.setTextureRect(sf::IntRect(268, 28, 23, 23));
-				else if (elapsed > 600 && elapsed <= 800)
-					sprite1.sprite.setTextureRect(sf::IntRect(238, 28, 23, 23));
-				else if (elapsed > 800 && elapsed <= 1000)
-					sprite1.sprite.setTextureRect(sf::IntRect(388, 28, 23, 23));
-				if (hitInd(sprite1, sprite2, 'a'))
-					sprite2.sprite.move(sf::Vector2f(-.1, 0));
-				sprite1.sprite.move(sf::Vector2f(-.1, 0));
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-			{
-				sprite1.sprite.setTextureRect(sf::IntRect(328, 118, 23, 23));
-				if (hitInd(sprite1, sprite2, 'd'))
-					sprite2.sprite.move(sf::Vector2f(.1, 0));
-				sprite1.sprite.move(sf::Vector2f(.1, 0));
-			}
-		}
-		else
-		{
-			clock.restart();
-			clock_start = 0; //end clock if button is released
 		}
 		// Clear screen
 		window.clear();
@@ -147,7 +169,7 @@ int main()
 		//// Draw the string
 		//window.draw(text);
 		// Update the window
-		view.zoom(0.5f);
+		//window.setView(view);
 		window.display();
 	}
 	return EXIT_SUCCESS;
