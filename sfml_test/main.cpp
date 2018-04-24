@@ -5,33 +5,30 @@
 #include "map1.h"
 #include <iostream>
 #include "master_map.h"
+#include "map2.h"
 using std::cout;
 int main()
 {
+	bool staircase = false; // for going to map 2
+
+
 	// Create the main window
 	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window");
 	sf::Vector2u borders(window.getSize().x, window.getSize().y);
 
 	master_map border(borders);
+
 	map1 map_one(borders);
 	map_one.load_map(window); // loads map image
-	//map_one.set_staircase_bounds(borders); // sets the staircase rec
+
+	map2 map_two(borders);
+	map_two.load_map(window);
 
 	// Load a sprite to display
 	sf::Texture texture;
 	if (!texture.loadFromFile("thelegendofzeldalinktothepast_link_sheet.png"))
 		return EXIT_FAILURE;
 
-	sf::Image image;
-	if (!image.loadFromFile("map2.png"))
-	{
-		return EXIT_FAILURE;
-	}
-
-	// creating hitbox for going to next map
-	//Rec staircase_next(*(new sf::Vector2f(window.getSize().x*.05, window.getSize().y*0.93)),
-	//	sf::Color::Green,
-	//	*(new sf::Vector2f(window.getSize().x*0.10, window.getSize().y*0.07)));
 	Rec attack(sf::Vector2f(14, 22), 
 		sf::Color::Transparent,
 		sf::Vector2f(0, 0));
@@ -55,14 +52,8 @@ int main()
 	double elapsed = 0;
 	char orientation = 0; //'w' is up, 'a' is left, 's' is down, 'd' is right
 
-	/*view.reset(sf::FloatRect(0, 0, 800, 600));
-	view.setSize(800, 600);
-	view.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));*/
-	//creating background END
 	while (window.isOpen())
 	{
-	/*	float Scalex = (float)WindowSize.x / TextureSize.x;
-		float Scaley = (float)WindowSize.y / TextureSize.y;*/
 		// Process events
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -84,15 +75,8 @@ int main()
 			if (attacking && !clock_start)
 			{
 				clock_start = 1;
-				
 			}
-
 		}
-		//if (hitInd(sprite1, staircase_next, orientation)) // puts you to next level when you hit the stairs
-		//{
-		//	map_one.texture1.update(image); // updates the map
-		//	sprite1.sprite.setPosition(380, 50); // puts sprite back in original positon
-		//}
 
 		if (sf::Keyboard::isKeyPressed)
 		{
@@ -172,14 +156,23 @@ int main()
 		// Clear screen
 		window.clear();
 		// Draw the sprite
-		window.draw(map_one.background); // draws the background
+
+		if (hitInd(sprite1, map_one.staircase_next, orientation)) // sets next level to true
+		{
+			staircase = true;
+			sprite1.sprite.setPosition(380, 50); // puts sprite back in original positon
+		}
+		if (staircase == true) // stays on next level 
+		{
+			window.draw(map_two.background);
+		}
+		else // stop showing map 1
+		{
+			window.draw(map_one.background);
+		}
+
 		window.draw(sprite1.sprite);
 		window.draw(sprite2.sprite);
-		window.draw(map_one.staircase_next);
-		window.draw(border.top_barrier);
-		window.draw(border.bottom_barrier);
-		window.draw(border.right_barrier);
-		window.draw(border.left_barrier);
 		//// Draw the string
 		//window.draw(text);
 		// Update the window
