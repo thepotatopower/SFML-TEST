@@ -31,18 +31,73 @@ void gSprite::setWidth(double input)
 	width = input;
 }
 
-void gSprite::atkd(char orientation)
+void gSprite::atkInit(char orientation)
 {
-	attacked = 1;
+	if (this->freeMove && !this->attacking)
+	{
+		this->attacking = 1;
+		this->freeMove = 0;
+		if (orientation == 's')
+		{
+			this->hitbox.setRotation(270);
+			this->hitbox.setPosition(sf::Vector2f(this->sprite.getPosition().x, this->sprite.getPosition().y + (2 * this->height)));
+		}
+		else if (orientation == 'a')
+		{
+			this->hitbox.setRotation(0);
+			this->hitbox.setPosition(sf::Vector2f(this->sprite.getPosition().x - this->width, this->sprite.getPosition().y));
+		}
+		else if (orientation == 'd')
+		{
+			this->hitbox.setRotation(0);
+			this->hitbox.setPosition(sf::Vector2f(this->sprite.getPosition().x + this->width, this->sprite.getPosition().y));
+		}
+		else if (orientation == 'w')
+		{
+			this->hitbox.setRotation(270);
+			this->hitbox.setPosition(sf::Vector2f(this->sprite.getPosition().x, this->sprite.getPosition().y));
+		}
+
+		std::thread(&atkAnimate, this).detach();
+	}
+}
+
+void gSprite::atkRec(char orientation, master_map *border)
+{
+	if (!(this->attacked))
+	{
+		std::thread(&atkd, this, orientation, border).detach();
+	}
+}
+
+void atkd(gSprite *sprite, char orientation, master_map *map)
+{
+	sprite->attacked = 1;
+	sprite->freeMove = 0;
 	sf::Clock clock;
 	double elapsed = clock.getElapsedTime().asMilliseconds();
 	while (elapsed < 1000)
 	{
 		elapsed = clock.getElapsedTime().asMilliseconds();
-		if (orientation == 's')
-			sprite.move(*(new sf::Vector2f(0, elapsed * 100000)));
+		if (!hitInd(*sprite, map->bottom_barrier) &&
+			!hitInd(*sprite, map->top_barrier) &&
+			!hitInd(*sprite, map->left_barrier) &&
+			!hitInd(*sprite, map->right_barrier))
+		{
+			if (orientation == 's')
+				sprite->sprite.move(sf::Vector2f(0, .0000001 * (1000 - elapsed)));
+			else if (orientation == 'w')
+				sprite->sprite.move(sf::Vector2f(0, -.0000001 * (1000 - elapsed)));
+			else if (orientation == 'a')
+				sprite->sprite.move(sf::Vector2f(-.0000001 * (1000 - elapsed), 0));
+			else if (orientation == 'd')
+				sprite->sprite.move(sf::Vector2f(.0000001 * (1000 - elapsed), 0));
+		}
+		else
+			std::cout << "hit" << std::endl;
 	}
-	attacked = 0;
+	sprite->attacked = 0;
+	sprite->freeMove = 1;
 }
 
 //function for determining if sprite1 has hit sprite2, returns 1 if hit, 0 if not
@@ -64,7 +119,7 @@ bool hitInd(gSprite sprite1, gSprite sprite2, char direction)
 	{
 		if (sprite1.sprite.getPosition().x > sprite2.sprite.getPosition().x &&
 			sprite1.sprite.getPosition().x <= sprite2.sprite.getPosition().x + sprite2.width + 1 &&
-			//	!hitInd(sprite1, sprite2, 'w') && !hitInd(sprite1, sprite2, 's') &&
+		//	!hitInd(sprite1, sprite2, 'w') && !hitInd(sprite1, sprite2, 's') &&
 			sprite1.sprite.getPosition().y > sprite2.sprite.getPosition().y - sprite1.height &&
 			sprite1.sprite.getPosition().y < sprite2.sprite.getPosition().y + sprite2.height)
 			hit = 1;
@@ -73,7 +128,7 @@ bool hitInd(gSprite sprite1, gSprite sprite2, char direction)
 	{
 		if (sprite1.sprite.getPosition().y >= sprite2.sprite.getPosition().y - sprite1.height - 1 &&
 			sprite1.sprite.getPosition().y < sprite2.sprite.getPosition().y &&
-			//	!hitInd(sprite1, sprite2, 'a') && !hitInd(sprite1, sprite2, 'd') &&
+		//	!hitInd(sprite1, sprite2, 'a') && !hitInd(sprite1, sprite2, 'd') &&
 			sprite1.sprite.getPosition().x > sprite2.sprite.getPosition().x - sprite1.width &&
 			sprite1.sprite.getPosition().x < sprite2.sprite.getPosition().x + sprite2.width)
 			hit = 1;
@@ -157,7 +212,7 @@ void atkAnimate(gSprite *sprite)
 	sf::Clock clock;
 	double elapsed = clock.getElapsedTime().asMilliseconds();
 	std::cout << elapsed;
-	while (elapsed < 1000)
+	while (elapsed < 500)
 	{
 		elapsed = clock.getElapsedTime().asMilliseconds();
 	}

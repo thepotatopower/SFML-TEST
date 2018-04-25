@@ -1,35 +1,43 @@
-#pragma once
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
-#include "key.h"
+#include <SFML/System.hpp>
+#include "gSprite.h"
+#include "Rectangle.h"
 #include "map1.h"
 #include <iostream>
 #include "master_map.h"
 #include "map2.h"
+#include <thread>
+#include <mutex>
+#include "Menu.h"
+#include "key.h"
 #include "map3.h"
+
+
 using std::cout;
+
 int main()
 {
 	sf::Music music;
 	music.openFromFile("mainmenu2.ogg");
 	music.play();
+
+	if (!Menu())
+		return 0;
+
 	bool staircase = false; // for going to map 2
 	bool map1_door = false; //for going to map 3
 							// Create the main window
 	bool key_check = false;
 
+	music.openFromFile("Game2.ogg");
+	music.play();
+
+	// Create the main window
 	sf::RenderWindow window(sf::VideoMode(800, 700), "SFML window");
 	sf::Vector2u borders(window.getSize().x, window.getSize().y);
 
 	master_map border(borders);
-
-	//// Key casts to a gsprite for hitbox function
-	/*key* keys = new gSprite;
-	gSprite* Key = dynamic_cast<gSprite*>(keys);
-	Key->picture(window);
-	Key->height = Key->keys.getTextureRect().height;
-	Key->width = Key->keys.getTextureRect().width;*/
-	////
 
 	map1 map_one(borders);
 	map_one.load_map(window); // loads map image
@@ -45,27 +53,24 @@ int main()
 	if (!texture.loadFromFile("thelegendofzeldalinktothepast_link_sheet.png"))
 		return EXIT_FAILURE;
 
-	sf::RectangleShape attack;
-	attack.setSize(sf::Vector2f(16, 22));
-	attack.setFillColor(sf::Color::Green);
-	attack.setPosition(0, 0);
-
 	//initialize sprites
 	gSprite sprite1(23, 23, texture), sprite2(30, 60, texture);
 	sprite1.sprite.setTextureRect(sf::IntRect(0, 0, 23, 23));
 	sprite1.sprite.setPosition(380, 50);
+	sprite1.hitbox.setSize(sf::Vector2f(16, 22));
+	sprite1.hitbox.setFillColor(sf::Color::Green);
+	sprite1.hitbox.setPosition(0, 0);
 	sprite2.sprite.setTextureRect(sf::IntRect(355, 212, 30, 60));
 	sprite2.sprite.setPosition(100, 100);
 	key key;
-	////////
+	/////////
 
 	sf::Keyboard keyboard;
 	sf::View view;
 	sf::Clock clock;
 
-	//sf::Thread atk(&atkAnimate, sprite1);
+	
 	bool freeMove = 1, clock_start = 0, attacking = 0;
-	float x, y;
 	double elapsed = 0;
 	char orientation = 's'; //'w' is up, 'a' is left, 's' is down, 'd' is right
 
@@ -82,34 +87,11 @@ int main()
 			{
 				window.close();
 			}
-			//if (!attacking && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) //attack button
-			//{
-			//	attacking = 1;
-			//	freeMove = 0;
-			//	clock.restart();
-			//	if (orientation = 's')
-			//	{
-			//		attack.setRotation(270);
-			//		attack.setPosition(sprite1.sprite.getPosition().x, sprite1.sprite.getPosition().y + sprite1.height);
-			//	}
-			//}
-			if (attacking)
-			{
-				if (clock.getElapsedTime().asMilliseconds() > 1)
-				{
-					attacking = 0;
-					freeMove = 1;
-				}
-				if (hitInd(sprite1, attack))
-				{
-					sprite2.sprite.move(0, 5);
-				}
-			}
 		}
 
 		if (sf::Keyboard::isKeyPressed)
 		{
-			if (freeMove) //only move if freeMove is true
+			if (sprite1.freeMove) //only move if freeMove is true
 			{
 				if (!clock_start) //start clock when key is pressed
 				{
@@ -122,11 +104,19 @@ int main()
 					clock.restart(); //restart clock if time passes 1000 milliseconds
 					elapsed = clock.getElapsedTime().asMilliseconds();
 				}
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+				{
+					sprite1.atkInit(orientation);
+				}
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 				{
+					orientation = 's';
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+					{
+						sprite1.atkInit(orientation);
+					}
 					if (!hitInd(sprite1, border.bottom_barrier, orientation))
 					{
-						orientation = 's';
 						sprite1.sprite.setTextureRect(sf::IntRect(0, 0, 23, 23)); //change sprite according to direction
 						if (hitInd(sprite1, sprite2, orientation))
 							sprite2.sprite.move(sf::Vector2f(0, .1));
@@ -135,6 +125,11 @@ int main()
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 				{
+					orientation = 'w';
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+					{
+						sprite1.atkInit(orientation);
+					}
 					if (!hitInd(sprite1, border.top_barrier, orientation))
 					{
 						orientation = 'w';
@@ -146,9 +141,13 @@ int main()
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 				{
+					orientation = 'a';
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+					{
+						sprite1.atkInit(orientation);
+					}
 					if (!hitInd(sprite1, border.right_barrier, orientation))
 					{
-						orientation = 'a';
 						if (elapsed <= 200) //change sprite animation in accordance to how much time has passed since button has been pressed
 							sprite1.sprite.setTextureRect(sf::IntRect(358, 28, 23, 23));
 						else if (elapsed > 200 && elapsed <= 400)
@@ -166,28 +165,17 @@ int main()
 				}
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 				{
+					orientation = 'd';
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+					{
+						sprite1.atkInit(orientation);
+					}
 					if (!hitInd(sprite1, border.left_barrier, orientation))
 					{
-						orientation = 'd';
 						sprite1.sprite.setTextureRect(sf::IntRect(328, 118, 23, 23));
 						if (hitInd(sprite1, sprite2, orientation))
 							sprite2.sprite.move(sf::Vector2f(.1, 0));
 						sprite1.sprite.move(sf::Vector2f(.1, 0));
-					}
-				}
-				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-				{
-					if (sprite1.freeMove && !sprite1.attacking)
-					{
-						sprite1.attacking = 1;
-						freeMove = 0;
-						clock.restart();
-						if (orientation == 's')
-						{
-							attack.setRotation(0);
-							attack.setPosition(sf::Vector2f(sprite1.sprite.getPosition().x, sprite1.sprite.getPosition().y + sprite1.height));
-						}
-						//					atk.launch();
 					}
 				}
 			}
@@ -196,16 +184,18 @@ int main()
 				clock.restart();
 				clock_start = 0; //end clock if button is released
 			}
-		}
-		if (hitInd(sprite1, key))
-		{
-			key.sprite.setPosition(sf::Vector2f(15, 658));
-			key_check = true;
+			if (sprite1.attacking)
+			{
+				if (hitInd(sprite2, sprite1.hitbox))
+				{
+					sprite2.atkRec(orientation, &border);
+				}
+			}
 		}
 		// Clear screen
 		window.clear();
 		// Draw the sprite
-		window.draw(attack);
+
 		if (staircase == true) //either draw key only when map2 is active, or when key is collected
 			window.draw(key.sprite);
 		else if (key_check == true)
@@ -227,6 +217,11 @@ int main()
 		{
 			window.draw(map_two.background);
 			window.draw(key.sprite);
+			if (key_check == false && hitInd(sprite1, key))
+			{
+				key_check = true;
+				key.sprite.setPosition(sf::Vector2f(15, 658));
+			}
 			if (hitInd(sprite1, map_one.door, orientation)) //i want this to transition back to map 1
 			{
 				staircase = false;
@@ -241,8 +236,14 @@ int main()
 		{
 			window.draw(map_one.background);
 		}
+
 		window.draw(sprite1.sprite);
-		//window.draw(map_two.door);     why is it not drawing this
+		window.draw(sprite2.sprite);
+		window.draw(sprite1.hitbox);
+		//// Draw the string
+		//window.draw(text);
+		// Update the window
+		//window.setView(view);
 		window.display();
 	}
 	return EXIT_SUCCESS;
