@@ -20,10 +20,20 @@ public:
 	bool attacking = 0;
 	bool attacked = 0;
 	bool freeMove = 1;
+	int life = 3;
 	sf::RectangleShape hitbox;
 	void atkInit(char orientation);
 	void atkRec(char orientation, master_map *border);
+	char orientation;
 	Sprite sprite;
+};
+
+class Spawn
+{
+public:
+	gSprite* sprite1;
+	gSprite* sprite2;
+	bool alive = 0;
 };
 
 bool hitInd(gSprite sprite1, gSprite sprite2, char direction); //'w' for up, 'a' for left, 's' for down, 'd' for right
@@ -33,3 +43,5 @@ void atkAnimate(gSprite *sprite);
 char reverse(char orientation);
 bool hitInd(const gSprite &sprite, const gSprite &sprite2);
 void atkd(gSprite *sprite, char orientation, master_map *map);
+void spawn(gSprite* player, Spawn *baddies, sf::Music *music);
+

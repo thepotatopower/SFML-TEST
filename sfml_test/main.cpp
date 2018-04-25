@@ -19,6 +19,7 @@ using std::cout;
 int main()
 {
 	sf::Music music;
+	sf::Text text;
 	music.openFromFile("mainmenu2.ogg");
 	music.play();
 
@@ -49,9 +50,10 @@ int main()
 	map_three.load_map(window);
 
 	// Load a sprite to display
-	sf::Texture texture;
+	sf::Texture texture, texture2;
 	if (!texture.loadFromFile("thelegendofzeldalinktothepast_link_sheet.png"))
 		return EXIT_FAILURE;
+	texture2.loadFromFile("enemyorignal.png");
 
 	//initialize sprites
 	gSprite sprite1(23, 23, texture), sprite2(30, 60, texture);
@@ -62,15 +64,23 @@ int main()
 	sprite1.hitbox.setPosition(0, 0);
 	sprite2.sprite.setTextureRect(sf::IntRect(355, 212, 30, 60));
 	sprite2.sprite.setPosition(100, 100);
+	
+	gSprite enemy1(28, 31, texture2), enemy2(28, 31, texture2);
+	enemy1.sprite.setTextureRect(sf::IntRect(194, 0, 28, 31));
+	enemy2.sprite.setTextureRect(sf::IntRect(194, 0, 28, 31));
+
+	Spawn baddies;
+	baddies.sprite1 = &enemy1;
+	baddies.sprite2 = &enemy2;
+
 	key key;
 	/////////
 
 	sf::Keyboard keyboard;
 	sf::View view;
 	sf::Clock clock;
-
 	
-	bool freeMove = 1, clock_start = 0, attacking = 0;
+	bool freeMove = 1, clock_start = 0, attacking = 0, eliminated = 0, enemy_music;
 	double elapsed = 0;
 	char orientation = 's'; //'w' is up, 'a' is left, 's' is down, 'd' is right
 
@@ -111,13 +121,23 @@ int main()
 				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 				{
 					orientation = 's';
+					sprite1.orientation = 's';
 					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 					{
 						sprite1.atkInit(orientation);
 					}
 					if (!hitInd(sprite1, border.bottom_barrier, orientation))
 					{
-						sprite1.sprite.setTextureRect(sf::IntRect(0, 0, 23, 23)); //change sprite according to direction
+						if (elapsed <= 200)
+							sprite1.sprite.setTextureRect(sf::IntRect(0, 0, 23, 23)); //change sprite according to direction
+						else if (elapsed > 200 && elapsed <= 400)
+							sprite1.sprite.setTextureRect(sf::IntRect(0, 29, 23, 23));
+						else if (elapsed > 400 && elapsed <= 600)
+							sprite1.sprite.setTextureRect(sf::IntRect(30, 29, 23, 23));
+						else if (elapsed > 600 && elapsed <= 800)
+							sprite1.sprite.setTextureRect(sf::IntRect(60, 29, 23, 23));
+						else if (elapsed > 800 && elapsed <= 1000)
+							sprite1.sprite.setTextureRect(sf::IntRect(90, 29, 23, 23));
 						if (hitInd(sprite1, sprite2, orientation))
 							sprite2.sprite.move(sf::Vector2f(0, .1));
 						sprite1.sprite.move(sf::Vector2f(0, .1));
@@ -126,6 +146,7 @@ int main()
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 				{
 					orientation = 'w';
+					sprite1.orientation = 'w';
 					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 					{
 						sprite1.atkInit(orientation);
@@ -133,7 +154,16 @@ int main()
 					if (!hitInd(sprite1, border.top_barrier, orientation))
 					{
 						orientation = 'w';
-						sprite1.sprite.setTextureRect(sf::IntRect(89, 118, 23, 23));
+						if (elapsed <= 200)
+							sprite1.sprite.setTextureRect(sf::IntRect(89, 118, 23, 23));
+						else if (elapsed > 200 && elapsed <= 400)
+							sprite1.sprite.setTextureRect(sf::IntRect(119, 118, 23, 23));
+						else if (elapsed > 400 && elapsed <= 600)
+							sprite1.sprite.setTextureRect(sf::IntRect(149, 118, 23, 23));
+						else if (elapsed > 600 && elapsed <= 800)
+							sprite1.sprite.setTextureRect(sf::IntRect(179, 118, 23, 23));
+						else if (elapsed > 800 && elapsed <= 1000)
+							sprite1.sprite.setTextureRect(sf::IntRect(209, 118, 23, 23));
 						if (hitInd(sprite1, sprite2, orientation))
 							sprite2.sprite.move(sf::Vector2f(0, -.1));
 						sprite1.sprite.move(sf::Vector2f(0, -.1));
@@ -142,6 +172,7 @@ int main()
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 				{
 					orientation = 'a';
+					sprite1.orientation = 'a';
 					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 					{
 						sprite1.atkInit(orientation);
@@ -166,13 +197,23 @@ int main()
 				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 				{
 					orientation = 'd';
+					sprite1.orientation = 'd';
 					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 					{
 						sprite1.atkInit(orientation);
 					}
 					if (!hitInd(sprite1, border.left_barrier, orientation))
 					{
-						sprite1.sprite.setTextureRect(sf::IntRect(328, 118, 23, 23));
+						if (elapsed <= 200) //change sprite animation in accordance to how much time has passed since button has been pressed
+							sprite1.sprite.setTextureRect(sf::IntRect(358, 118, 23, 23));
+						else if (elapsed > 200 && elapsed <= 400)
+							sprite1.sprite.setTextureRect(sf::IntRect(298, 118, 23, 23));
+						else if (elapsed > 400 && elapsed <= 600)
+							sprite1.sprite.setTextureRect(sf::IntRect(268, 118, 23, 23));
+						else if (elapsed > 600 && elapsed <= 800)
+							sprite1.sprite.setTextureRect(sf::IntRect(238, 118, 23, 23));
+						else if (elapsed > 800 && elapsed <= 1000)
+							sprite1.sprite.setTextureRect(sf::IntRect(388, 118, 23, 23));
 						if (hitInd(sprite1, sprite2, orientation))
 							sprite2.sprite.move(sf::Vector2f(.1, 0));
 						sprite1.sprite.move(sf::Vector2f(.1, 0));
@@ -190,42 +231,74 @@ int main()
 				{
 					sprite2.atkRec(orientation, &border);
 				}
+				if (hitInd(enemy1, sprite1.hitbox))
+				{
+					enemy1.atkRec(orientation, &border);
+				}
+				if (hitInd(enemy2, sprite1.hitbox))
+				{
+					enemy2.atkRec(orientation, &border);
+				}
+			}
+			if (hitInd(enemy1, sprite1))
+			{
+				sprite1.atkRec(enemy1.orientation, &border);
+			}
+			if (hitInd(enemy2, sprite1))
+			{
+				sprite1.atkRec(enemy2.orientation, &border);
 			}
 		}
 		// Clear screen
 		window.clear();
 		// Draw the sprite
 
-		if (staircase == true) //either draw key only when map2 is active, or when key is collected
-			window.draw(key.sprite);
-		else if (key_check == true)
-			window.draw(key.sprite);
-		if (hitInd(sprite1, map_one.staircase_next, orientation)) // sets to map 2
+		if (!(baddies.alive))
 		{
-			staircase = true;
-			sprite1.sprite.setPosition(380, 50); // puts sprite back in original positon
-		}
-		if (key_check == true)
-		{
-			if (hitInd(sprite1, map_one.door, orientation)) // sets to map 3
+			if (hitInd(sprite1, map_one.staircase_next, orientation)) // sets to map 2
 			{
-				staircase = false;
-				map1_door = true;
+				staircase = true;
+				sprite1.sprite.setPosition(380, 50); // puts sprite back in original positon
+			}
+			if (key_check == true && staircase == false)
+			{
+				if (hitInd(sprite1, map_one.door, orientation)) // sets to map 3
+				{
+					staircase = false;
+					map1_door = true;
+					sprite1.sprite.setPosition(100, 600); //set position somewhere near the staircase of map 2
+					music.openFromFile("03 Manabu Namiki, Noriyuki Kamikura - Gentle Breeze.ogg");
+					music.play();
+				}
+				if (hitInd(sprite1, map_one.staircase_next, orientation))
+				{
+					map1_door = false;
+					sprite1.sprite.setPosition(380, 50);
+				}
 			}
 		}
 		if (staircase == true) // stays on map 2
 		{
 			window.draw(map_two.background);
-			window.draw(key.sprite);
 			if (key_check == false && hitInd(sprite1, key))
 			{
 				key_check = true;
 				key.sprite.setPosition(sf::Vector2f(15, 658));
+				text.setString("DEMO OVER");
+				text.setColor(sf::Color::Red);
+				text.setCharacterSize(30);
+				text.setPosition(window.getSize().x * .4, window.getSize().y * .4);
+				std::thread(spawn, &sprite1, &baddies, &music).detach();
+				music.openFromFile("25 Wave Battle.ogg");
+				music.play();
 			}
-			if (hitInd(sprite1, map_one.door, orientation)) //i want this to transition back to map 1
+			if (!baddies.alive)
 			{
-				staircase = false;
-				sprite1.sprite.setPosition(100, 600); //set position somewhere near the staircase of map 2
+				if (hitInd(sprite1, map_one.door, orientation)) //move to map 1
+				{
+					staircase = false;
+					sprite1.sprite.setPosition(100, 600); //set position somewhere near the staircase of map 2
+				}
 			}
 		}
 		else if (map1_door) // stays on map 3
@@ -237,13 +310,18 @@ int main()
 			window.draw(map_one.background);
 		}
 
+		if (baddies.alive)
+		{
+			window.draw(enemy1.sprite);
+			window.draw(enemy2.sprite);
+		}
+		if (staircase == true) //either draw key only when map2 is active, or when key is collected
+			window.draw(key.sprite);
+		else if (key_check == true)
+			window.draw(key.sprite);
 		window.draw(sprite1.sprite);
 		window.draw(sprite2.sprite);
-		window.draw(sprite1.hitbox);
-		//// Draw the string
-		//window.draw(text);
-		// Update the window
-		//window.setView(view);
+		window.draw(text);
 		window.display();
 	}
 	return EXIT_SUCCESS;

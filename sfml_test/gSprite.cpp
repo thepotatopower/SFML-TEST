@@ -73,6 +73,7 @@ void gSprite::atkRec(char orientation, master_map *border)
 void atkd(gSprite *sprite, char orientation, master_map *map)
 {
 	sprite->attacked = 1;
+	sprite->life--;
 	sprite->freeMove = 0;
 	sf::Clock clock;
 	double elapsed = clock.getElapsedTime().asMilliseconds();
@@ -210,14 +211,88 @@ bool hitInd(const gSprite &sprite, const gSprite &sprite2)
 void atkAnimate(gSprite *sprite)
 {
 	sf::Clock clock;
-	double elapsed = clock.getElapsedTime().asMilliseconds();
-	std::cout << elapsed;
-	while (elapsed < 500)
-	{
-		elapsed = clock.getElapsedTime().asMilliseconds();
-	}
-	sprite->attacking = 0;
+		if (sprite->orientation == 'a')
+		{
+			clock.restart();
+			while (clock.getElapsedTime().asMilliseconds() <= 100)
+				sprite->sprite.setTextureRect(sf::IntRect(241, 89, 28, 28));
+			clock.restart();
+			while (clock.getElapsedTime().asMilliseconds() <= 100)
+				sprite->sprite.setTextureRect(sf::IntRect(266, 89, 28, 28));
+			clock.restart();
+			while(clock.getElapsedTime().asMilliseconds() <= 100)
+				sprite->sprite.setTextureRect(sf::IntRect(294, 89, 28, 28));
+			clock.restart();
+			while (clock.getElapsedTime().asMilliseconds() <= 100)
+				sprite->sprite.setTextureRect(sf::IntRect(326, 89, 28, 28));
+			clock.restart();
+			while (clock.getElapsedTime().asMilliseconds() <= 100)
+				sprite->sprite.setTextureRect(sf::IntRect(357, 85, 28, 28));
+		}
+		if (sprite->orientation == 'd') 
+		{
+			clock.restart();
+			while (clock.getElapsedTime().asMilliseconds() <= 100)
+				sprite->sprite.setTextureRect(sf::IntRect(241, 178, 28, 28));
+			clock.restart();
+			while (clock.getElapsedTime().asMilliseconds() <= 100)
+				sprite->sprite.setTextureRect(sf::IntRect(266, 178, 28, 28));
+			clock.restart();
+			while(clock.getElapsedTime().asMilliseconds() <= 100)
+				sprite->sprite.setTextureRect(sf::IntRect(294, 178, 28, 28));
+			clock.restart();
+			while (clock.getElapsedTime().asMilliseconds() <= 100)
+				sprite->sprite.setTextureRect(sf::IntRect(326, 178, 28, 28));
+			clock.restart();
+			while (clock.getElapsedTime().asMilliseconds() <= 100)
+				sprite->sprite.setTextureRect(sf::IntRect(357, 178, 28, 28));
+		}
+		if (sprite->orientation == 'w')
+		{
+			clock.restart();
+			while (clock.getElapsedTime().asMilliseconds() <= 100)
+				sprite->sprite.setTextureRect(sf::IntRect(0, 178, 28, 28));
+			clock.restart();
+			while (clock.getElapsedTime().asMilliseconds() <= 100)
+				sprite->sprite.setTextureRect(sf::IntRect(28, 178, 28, 28));
+			clock.restart();
+			while (clock.getElapsedTime().asMilliseconds() <= 100)
+				sprite->sprite.setTextureRect(sf::IntRect(59, 178, 28, 28));
+			clock.restart();
+			while (clock.getElapsedTime().asMilliseconds() <= 100)
+				sprite->sprite.setTextureRect(sf::IntRect(86, 178, 28, 28));
+			clock.restart();
+			while (clock.getElapsedTime().asMilliseconds() <= 100)
+				sprite->sprite.setTextureRect(sf::IntRect(113, 178, 28, 28));
+		}
+		if (sprite->orientation == 's')
+		{
+			clock.restart();
+			while (clock.getElapsedTime().asMilliseconds() <= 100)
+				sprite->sprite.setTextureRect(sf::IntRect(0, 88, 28, 28));
+			clock.restart();
+			while (clock.getElapsedTime().asMilliseconds() <= 100)
+				sprite->sprite.setTextureRect(sf::IntRect(28, 88, 28, 28));
+			clock.restart();
+			while (clock.getElapsedTime().asMilliseconds() <= 100)
+				sprite->sprite.setTextureRect(sf::IntRect(59, 88, 28, 28));
+			clock.restart();
+			while (clock.getElapsedTime().asMilliseconds() <= 100)
+				sprite->sprite.setTextureRect(sf::IntRect(86, 88, 28, 28));
+			clock.restart();
+			while (clock.getElapsedTime().asMilliseconds() <= 100)
+				sprite->sprite.setTextureRect(sf::IntRect(113, 88, 28, 28));
+		}
+		if (sprite->orientation == 'a')
+			sprite->sprite.setTextureRect(sf::IntRect(358, 28, 23, 23));
+		else if (sprite->orientation == 's')
+			sprite->sprite.setTextureRect(sf::IntRect(0, 0, 23, 23));
+	else if (sprite->orientation == 'd')
+		sprite->sprite.setTextureRect(sf::IntRect(328, 118, 23, 23));
+	else if (sprite->orientation == 'w')
+		sprite->sprite.setTextureRect(sf::IntRect(89, 118, 23, 23));
 	sprite->freeMove = 1;
+	sprite->attacking = 0;
 }
 
 char reverse(char orientation)
@@ -230,4 +305,85 @@ char reverse(char orientation)
 		return 'd';
 	else if (orientation == 'd')
 		return 'a';
+}
+
+void spawn(gSprite* player, Spawn *baddies, sf::Music *music)
+{
+	sf::Clock clock;
+	baddies->alive = 1;
+	baddies->sprite1->life = 3;
+	baddies->sprite2->life = 3;
+	baddies->sprite1->sprite.setPosition(100, 500);
+	baddies->sprite1->sprite.setPosition(700, 500);
+	while (baddies->sprite1->life > 0 || baddies->sprite2->life > 0)
+	{
+		if (clock.getElapsedTime().asMilliseconds() % 10 == 0)
+		{
+			if (baddies->sprite1->life > 0)
+			{
+				if (baddies->sprite1->freeMove)
+				{
+					if (player->sprite.getPosition().y > baddies->sprite1->sprite.getPosition().y)
+					{
+						baddies->sprite1->sprite.move(0, .00025);
+						baddies->sprite1->orientation = 's';
+					}
+					if (player->sprite.getPosition().y < baddies->sprite1->sprite.getPosition().y)
+					{
+						baddies->sprite1->sprite.move(0, -.00025);
+						baddies->sprite1->orientation = 'w';
+					}
+					if (player->sprite.getPosition().y <= baddies->sprite1->sprite.getPosition().y + 10
+						&& player->sprite.getPosition().y >= baddies->sprite1->sprite.getPosition().y - 10)
+					{
+						if (player->sprite.getPosition().x > baddies->sprite1->sprite.getPosition().x)
+						{
+							baddies->sprite1->sprite.move(.00025, 0);
+							baddies->sprite1->orientation = 'd';
+						}
+						if (player->sprite.getPosition().x < baddies->sprite1->sprite.getPosition().x)
+						{
+							baddies->sprite1->sprite.move(-.00025, 0);
+							baddies->sprite1->orientation = 'a';
+						}
+					}
+				}
+			}
+			if (baddies->sprite2->life > 0)
+			{
+				if (baddies->sprite2->freeMove)
+				{
+					if (player->sprite.getPosition().y > baddies->sprite2->sprite.getPosition().y)
+					{
+						baddies->sprite2->sprite.move(0, .0003);
+						baddies->sprite2->orientation = 's';
+					}
+					if (player->sprite.getPosition().y < baddies->sprite2->sprite.getPosition().y)
+					{
+						baddies->sprite2->sprite.move(0, -.0003);
+						baddies->sprite2->orientation = 'w';
+					}
+					if (player->sprite.getPosition().y <= baddies->sprite2->sprite.getPosition().y + 10
+						&& player->sprite.getPosition().y >= baddies->sprite2->sprite.getPosition().y - 10)
+					{
+						if (player->sprite.getPosition().x > baddies->sprite2->sprite.getPosition().x)
+						{
+							baddies->sprite2->sprite.move(.0003, 0);
+							baddies->sprite2->orientation = 'd';
+						}
+						if (player->sprite.getPosition().x < baddies->sprite2->sprite.getPosition().x)
+						{
+							baddies->sprite2->sprite.move(-.0003, 0);
+							baddies->sprite2->orientation = 'a';
+						}
+					}
+				}
+			}
+		}
+	}
+	baddies->alive = 0;
+	music->openFromFile("Game2.ogg");
+	music->play();
+	baddies->sprite2->sprite.setPosition(1000, 1000);
+	baddies->sprite1->sprite.setPosition(1000, 1000);
 }

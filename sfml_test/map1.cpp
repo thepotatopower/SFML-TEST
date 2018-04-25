@@ -22,6 +22,7 @@ bool map1::load_map(sf::RenderWindow &window)
 		background.setTexture(texture1);
 		background.setScale(Scalex, Scaley*.95);
 		set_staircase_bounds(window);
+		door_next(window);
 	}
 	return 1;
 }
@@ -35,7 +36,10 @@ void map1::set_staircase_bounds(sf::RenderWindow &window)
 
 void map1::door_next(sf::RenderWindow &window)
 {
-	this->door = Rec(*(new sf::Vector2f(window.getSize().x*.50, window.getSize().y*0.20)),
+	/*this->door = Rec(*(new sf::Vector2f(window.getSize().x*.50, window.getSize().y*0.20)),
 		sf::Color::Green,
-		*(new sf::Vector2f(window.getSize().x, window.getSize().y)));
+		*(new sf::Vector2f(window.getSize().x * .4, 0)));*/
+	this->door = Rec(*(new sf::Vector2f(window.getSize().x*.45, window.getSize().y*0.00)),
+		sf::Color::Green,
+		*(new sf::Vector2f(window.getSize().x*.1, window.getSize().y*.1)));
 }
