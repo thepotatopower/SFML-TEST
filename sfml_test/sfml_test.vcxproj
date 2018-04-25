@@ -155,17 +155,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="gSprite.cpp" />
+    <ClCompile Include="key.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map1.cpp" />
     <ClCompile Include="map2.cpp" />
+    <ClCompile Include="map3.cpp" />
     <ClCompile Include="master_map.cpp" />
     <ClCompile Include="Rectangle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="gSprite.h" />
     <ClInclude Include="Header.h" />
+    <ClInclude Include="key.h" />
     <ClInclude Include="map1.h" />
     <ClInclude Include="map2.h" />
+    <ClInclude Include="map3.h" />
     <ClInclude Include="master_map.h" />
     <ClInclude Include="Rectangle.h" />
   </ItemGroup>

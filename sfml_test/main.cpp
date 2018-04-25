@@ -6,12 +6,14 @@
 #include <iostream>
 #include "master_map.h"
 #include "map2.h"
+#include "map3.h"
 using std::cout;
 int main()
 {
 	bool staircase = false; // for going to map 2
-	// Create the main window
-	
+							// Create the main window
+	bool key_check = false;
+
 	sf::RenderWindow window(sf::VideoMode(800, 700), "SFML window");
 	sf::Vector2u borders(window.getSize().x, window.getSize().y);
 
@@ -30,6 +32,9 @@ int main()
 
 	map2 map_two(borders);
 	map_two.load_map(window);
+
+	map3 map_three(borders);
+	map_three.load_map(window);
 
 	// Load a sprite to display
 	sf::Texture texture;
@@ -178,7 +183,7 @@ int main()
 							attack.setRotation(0);
 							attack.setPosition(sf::Vector2f(sprite1.sprite.getPosition().x, sprite1.sprite.getPosition().y + sprite1.height));
 						}
-//					atk.launch();
+						//					atk.launch();
 					}
 				}
 			}
@@ -188,10 +193,15 @@ int main()
 				clock_start = 0; //end clock if button is released
 			}
 		}
+		if (hitInd(sprite1, key))
+		{
+			key.sprite.setPosition(sf::Vector2f(15, 658));
+			key_check = true;
+		}
 		// Clear screen
 		window.clear();
 		// Draw the sprite
-
+		window.draw(attack);
 		if (hitInd(sprite1, map_one.staircase_next, orientation)) // sets next level to true
 		{
 			staircase = true;
@@ -199,22 +209,29 @@ int main()
 		}
 		if (staircase == true) // stays on next level 
 		{
-			window.draw(map_two.background);
+			if (key_check == false)
+			{
+				window.draw(map_two.background);
+				window.draw(key.sprite);
+			}
+			if (hitInd(sprite1, map_two.door, orientation))
+			{
+				key_check = true;
+			}
+			if (key_check == true)
+			{
+				window.draw(map_three.background);
+				window.draw(sprite2.sprite);
+				window.draw(key.sprite);
+			}
 		}
 		else // stop showing map 1
 		{
 			window.draw(map_one.background);
-			window.draw(key.sprite);
 		}
-
 		window.draw(sprite1.sprite);
-		window.draw(sprite2.sprite);
-		window.draw(attack);
+		//window.draw(map_two.door);     why is it not drawing this
 		window.display();
-		if (hitInd(sprite1, key))
-		{
-			key.sprite.setPosition(sf::Vector2f(20, 685));
-		}
 	}
 	return EXIT_SUCCESS;
 }

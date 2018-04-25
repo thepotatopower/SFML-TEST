@@ -22,3 +22,10 @@ bool map2::load_map(sf::RenderWindow &window)
 	}
 	return 1;
 }
+
+void map2::door_next(sf::RenderWindow &window)
+{
+	this->door = Rec(*(new sf::Vector2f(window.getSize().x*.50, window.getSize().y*0.20)),
+		sf::Color::Green,
+		*(new sf::Vector2f(window.getSize().x, window.getSize().y)));
+}
