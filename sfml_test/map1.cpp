@@ -32,3 +32,10 @@ void map1::set_staircase_bounds(sf::RenderWindow &window)
 		sf::Color::Green,
 		*(new sf::Vector2f(window.getSize().x*0.10, window.getSize().y*0.07)));
 }
+
+void map1::door_next(sf::RenderWindow &window)
+{
+	this->door = Rec(*(new sf::Vector2f(window.getSize().x*.50, window.getSize().y*0.20)),
+		sf::Color::Green,
+		*(new sf::Vector2f(window.getSize().x, window.getSize().y)));
+}

@@ -11,6 +11,7 @@ using std::cout;
 int main()
 {
 	bool staircase = false; // for going to map 2
+	bool map1_door = false; //for going to map 3
 							// Create the main window
 	bool key_check = false;
 
@@ -202,30 +203,38 @@ int main()
 		window.clear();
 		// Draw the sprite
 		window.draw(attack);
-		if (hitInd(sprite1, map_one.staircase_next, orientation)) // sets next level to true
+		if (staircase == true) //either draw key only when map2 is active, or when key is collected
+			window.draw(key.sprite);
+		else if (key_check == true)
+			window.draw(key.sprite);
+		if (hitInd(sprite1, map_one.staircase_next, orientation)) // sets to map 2
 		{
 			staircase = true;
 			sprite1.sprite.setPosition(380, 50); // puts sprite back in original positon
 		}
-		if (staircase == true) // stays on next level 
+		if (key_check == true)
 		{
-			if (key_check == false)
+			if (hitInd(sprite1, map_one.door, orientation)) // sets to map 3
 			{
-				window.draw(map_two.background);
-				window.draw(key.sprite);
-			}
-			if (hitInd(sprite1, map_two.door, orientation))
-			{
-				key_check = true;
-			}
-			if (key_check == true)
-			{
-				window.draw(map_three.background);
-				window.draw(sprite2.sprite);
-				window.draw(key.sprite);
+				staircase = false;
+				map1_door = true;
 			}
 		}
-		else // stop showing map 1
+		if (staircase == true) // stays on map 2
+		{
+			window.draw(map_two.background);
+			window.draw(key.sprite);
+			if (hitInd(sprite1, map_one.door, orientation)) //i want this to transition back to map 1
+			{
+				staircase = false;
+				sprite1.sprite.setPosition(100, 600); //set position somewhere near the staircase of map 2
+			}
+		}
+		else if (map1_door) // stays on map 3
+		{
+			window.draw(map_three.background);
+		}
+		else //stays on map 1
 		{
 			window.draw(map_one.background);
 		}

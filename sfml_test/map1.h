@@ -11,10 +11,13 @@ public:
 
 	void set_staircase_bounds(sf::RenderWindow &window);
 
+	void door_next(sf::RenderWindow &window);
+
 	sf::Sprite background;
 	sf::Vector2u TextureSize;
 	sf::Vector2u WindowSize;
 	sf::Texture texture1;
 
 	Rec staircase_next;
+	Rec door;
 };
