@@ -10,6 +10,9 @@
 using std::cout;
 int main()
 {
+	sf::Music music;
+	music.openFromFile("mainmenu2.ogg");
+	music.play();
 	bool staircase = false; // for going to map 2
 	bool map1_door = false; //for going to map 3
 							// Create the main window
