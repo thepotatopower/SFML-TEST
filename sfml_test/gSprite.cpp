@@ -1,5 +1,5 @@
+#pragma once
 #include "gSprite.h"
-
 gSprite::gSprite(void)
 {
 	height = 0;
@@ -23,7 +23,7 @@ gSprite::gSprite(int width, int height, sf::Texture &texture)
 //function for determining if sprite1 has hit sprite2, returns 1 if hit, 0 if not
 //direction is the direction sprite1 is moving
 //'w' for up, 'a' for left, 's' for down, 'd' for right
-bool hitInd(gSprite sprite1, gSprite sprite2, char direction)
+bool hitInd(const gSprite &sprite1, const gSprite &sprite2, char direction)
 {
 	bool hit = 0;
 	if (direction == 'w') //up, checks if sprite1 hits bottom of sprite2

@@ -1,9 +1,11 @@
+#pragma once
 #include <SFML/Graphics.hpp>
 #include "Rectangle.h"
+#include "key.h"
 using sf::Sprite;
 
 //copy constructor not complete, do not initialize gSprite without intializing its values
-class gSprite
+class gSprite : public key
 {
 public:
 	gSprite(void);
@@ -17,7 +19,7 @@ public:
 	Sprite sprite;
 };
 
-bool hitInd(gSprite sprite1, gSprite sprite2, char direction); //'w' for up, 'a' for left, 's' for down, 'd' for right
+bool hitInd(const gSprite &sprite1, const gSprite &sprite2, char direction); //'w' for up, 'a' for left, 's' for down, 'd' for right
 bool hitInd(gSprite sprite, sf::RectangleShape rec, char direction);
 bool hitInd(gSprite sprite, sf::RectangleShape rec);
 void atkAnimate(gSprite &sprite);

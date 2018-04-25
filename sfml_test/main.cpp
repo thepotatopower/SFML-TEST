@@ -1,3 +1,4 @@
+#pragma once
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include "gSprite.h"
@@ -6,17 +7,25 @@
 #include <iostream>
 #include "master_map.h"
 #include "map2.h"
+#include "key.h"
 using std::cout;
 int main()
 {
 	bool staircase = false; // for going to map 2
-
-
 	// Create the main window
-	sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window");
+	
+	sf::RenderWindow window(sf::VideoMode(800, 700), "SFML window");
 	sf::Vector2u borders(window.getSize().x, window.getSize().y);
 
 	master_map border(borders);
+
+	//// Key casts to a gsprite for hitbox function
+	key* keys = new gSprite;
+	gSprite* Key = dynamic_cast<gSprite*>(keys);
+	Key->picture(window);
+	Key->height = Key->keys.getTextureRect().height;
+	Key->width = Key->keys.getTextureRect().width;
+	////
 
 	map1 map_one(borders);
 	map_one.load_map(window); // loads map image
@@ -40,8 +49,7 @@ int main()
 	sprite1.sprite.setPosition(380, 50);
 	sprite2.sprite.setTextureRect(sf::IntRect(355, 212, 30, 60));
 	sprite2.sprite.setPosition(100, 100);
-	/////////
-
+	////////
 
 	sf::Keyboard keyboard;
 	sf::View view;
@@ -193,19 +201,20 @@ int main()
 		if (staircase == true) // stays on next level 
 		{
 			window.draw(map_two.background);
+			window.draw(Key->keys);
 		}
 		else // stop showing map 1
 		{
 			window.draw(map_one.background);
 		}
+		if (hitInd(sprite1, *Key, orientation))
+		{
+			Key->keys.setPosition(20, 685);
+		}
 
 		window.draw(sprite1.sprite);
 		window.draw(sprite2.sprite);
 		window.draw(attack);
-		//// Draw the string
-		//window.draw(text);
-		// Update the window
-		//window.setView(view);
 		window.display();
 	}
 	return EXIT_SUCCESS;
