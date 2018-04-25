@@ -1,23 +1,21 @@
 #pragma once
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
-class key
+#include "gSprite.h"
+class key : public gSprite
 {
 public:
 	key()
 	{
+		keytexture.loadFromFile("key_items_sprite_by_aniahmator-dakyghu.png");
+		((gSprite *)this)->sprite.setTexture(keytexture);
+		((gSprite *)this)->sprite.setPosition(sf::Vector2f(400, 400)); // change coordinates to where we want
+		((gSprite *)this)->sprite.scale(sf::Vector2f(.3, .3)); // idk our scale
+
+		collected = false;
 	}
 	virtual ~key();
 	sf::Texture keytexture;
-	sf::Sprite keys;
 	bool collected;
-	void picture(sf::RenderWindow &window)
-	{
-		keytexture.loadFromFile("key_items_sprite_by_aniahmator-dakyghu.png");
-		keys.setTexture(keytexture);
-		keys.setPosition(sf::Vector2f(400, 400)); // change coordinates to where we want
-		keys.scale(sf::Vector2f(.3,.3)); // idk our scale
-		collected = false;
-	}
 	//void Collected();
 };

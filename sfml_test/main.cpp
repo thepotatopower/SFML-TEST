@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
-#include "gSprite.h"
+#include "key.h"
 #include "map1.h"
 #include <iostream>
 #include "master_map.h"
@@ -18,11 +18,11 @@ int main()
 	master_map border(borders);
 
 	//// Key casts to a gsprite for hitbox function
-	key* keys = new gSprite;
+	/*key* keys = new gSprite;
 	gSprite* Key = dynamic_cast<gSprite*>(keys);
 	Key->picture(window);
 	Key->height = Key->keys.getTextureRect().height;
-	Key->width = Key->keys.getTextureRect().width;
+	Key->width = Key->keys.getTextureRect().width;*/
 	////
 
 	map1 map_one(borders);
@@ -47,6 +47,7 @@ int main()
 	sprite1.sprite.setPosition(380, 50);
 	sprite2.sprite.setTextureRect(sf::IntRect(355, 212, 30, 60));
 	sprite2.sprite.setPosition(100, 100);
+	key key;
 	////////
 
 	sf::Keyboard keyboard;
@@ -203,16 +204,16 @@ int main()
 		else // stop showing map 1
 		{
 			window.draw(map_one.background);
-			window.draw(Key->keys);
+			window.draw(key.sprite);
 		}
 
 		window.draw(sprite1.sprite);
 		window.draw(sprite2.sprite);
 		window.draw(attack);
 		window.display();
-		if (hitInd(sprite1, *Key))
+		if (hitInd(sprite1, key))
 		{
-			Key->keys.setPosition(sf::Vector2f(20, 685));
+			key.sprite.setPosition(sf::Vector2f(20, 685));
 		}
 	}
 	return EXIT_SUCCESS;

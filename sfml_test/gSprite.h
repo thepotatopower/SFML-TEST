@@ -2,11 +2,10 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include "Rectangle.h"
-#include "key.h"
 using sf::Sprite;
 
 //copy constructor not complete, do not initialize gSprite without intializing its values
-class gSprite : public key
+class gSprite 
 {
 public:
 	gSprite(void);
