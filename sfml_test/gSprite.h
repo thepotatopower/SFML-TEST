@@ -2,10 +2,11 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include "Rectangle.h"
+#include "key.h"
 using sf::Sprite;
 
 //copy constructor not complete, do not initialize gSprite without intializing its values
-class gSprite
+class gSprite : public key
 {
 public:
 	gSprite(void);
@@ -27,4 +28,4 @@ bool hitInd(gSprite sprite, sf::RectangleShape rec, char direction);
 bool hitInd(const gSprite &sprite, const sf::RectangleShape &rec);
 void atkAnimate(gSprite *sprite);
 char reverse(char orientation);
-bool hitInd(const gSprite &sprite, const gSprite &sprite2)
+bool hitInd(const gSprite &sprite, const gSprite &sprite2);

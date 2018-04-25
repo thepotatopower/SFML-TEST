@@ -2,12 +2,10 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include "gSprite.h"
-#include "Rectangle.h"
 #include "map1.h"
 #include <iostream>
 #include "master_map.h"
 #include "map2.h"
-#include "key.h"
 using std::cout;
 int main()
 {
@@ -55,7 +53,7 @@ int main()
 	sf::View view;
 	sf::Clock clock;
 
-	sf::Thread atk(&atkAnimate, sprite1);
+	//sf::Thread atk(&atkAnimate, sprite1);
 	bool freeMove = 1, clock_start = 0, attacking = 0;
 	float x, y;
 	double elapsed = 0;
@@ -179,7 +177,7 @@ int main()
 							attack.setRotation(0);
 							attack.setPosition(sf::Vector2f(sprite1.sprite.getPosition().x, sprite1.sprite.getPosition().y + sprite1.height));
 						}
-						atk.launch();
+//					atk.launch();
 					}
 				}
 			}
@@ -201,21 +199,21 @@ int main()
 		if (staircase == true) // stays on next level 
 		{
 			window.draw(map_two.background);
-			window.draw(Key->keys);
 		}
 		else // stop showing map 1
 		{
 			window.draw(map_one.background);
-		}
-		if (hitInd(sprite1, *Key, orientation))
-		{
-			Key->keys.setPosition(20, 685);
+			window.draw(Key->keys);
 		}
 
 		window.draw(sprite1.sprite);
 		window.draw(sprite2.sprite);
 		window.draw(attack);
 		window.display();
+		if (hitInd(sprite1, *Key))
+		{
+			Key->keys.setPosition(sf::Vector2f(20, 685));
+		}
 	}
 	return EXIT_SUCCESS;
 }

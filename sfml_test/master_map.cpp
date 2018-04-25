@@ -1,3 +1,4 @@
+#pragma once
 #include "master_map.h"
 
 master_map::master_map(sf::Vector2u window)

@@ -1,5 +1,7 @@
+#pragma once
 #include "map1.h"
 #include "master_map.h"
+
 map1::map1(sf::Vector2u window) : master_map(window)
 {
 
@@ -18,7 +20,7 @@ bool map1::load_map(sf::RenderWindow &window)
 		float Scaley = (float)WindowSize.y / TextureSize.y;
 
 		background.setTexture(texture1);
-		background.setScale(Scalex, Scaley);
+		background.setScale(Scalex, Scaley*.95);
 		set_staircase_bounds(window);
 	}
 	return 1;
