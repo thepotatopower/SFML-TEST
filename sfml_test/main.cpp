@@ -1,3 +1,9 @@
+//Members:
+//Jason Clark
+//Kate Radford
+//Travis Cripe
+//Ethan Isakson
+
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -22,7 +28,8 @@ int main()
 	sf::Text text;
 	music.openFromFile("mainmenu2.ogg");
 	music.play();
-
+	sf::Font font;
+	font.loadFromFile("EnchantedLand.otf");
 	if (!Menu())
 		return 0;
 
@@ -269,6 +276,11 @@ int main()
 					sprite1.sprite.setPosition(100, 600); //set position somewhere near the staircase of map 2
 					music.openFromFile("03 Manabu Namiki, Noriyuki Kamikura - Gentle Breeze.ogg");
 					music.play();
+					text.setString("DEMO OVER");
+					text.setColor(sf::Color::Red);
+					text.setCharacterSize(100);
+					text.setPosition(window.getSize().x * .4, window.getSize().y * .4);
+					text.setFont(font);
 				}
 				if (hitInd(sprite1, map_one.staircase_next, orientation))
 				{
@@ -284,10 +296,6 @@ int main()
 			{
 				key_check = true;
 				key.sprite.setPosition(sf::Vector2f(15, 658));
-				text.setString("DEMO OVER");
-				text.setColor(sf::Color::Red);
-				text.setCharacterSize(30);
-				text.setPosition(window.getSize().x * .4, window.getSize().y * .4);
 				std::thread(spawn, &sprite1, &baddies, &music).detach();
 				music.openFromFile("25 Wave Battle.ogg");
 				music.play();
@@ -312,8 +320,10 @@ int main()
 
 		if (baddies.alive)
 		{
-			window.draw(enemy1.sprite);
-			window.draw(enemy2.sprite);
+			if (enemy1.life)
+				window.draw(enemy1.sprite);
+			if (enemy2.life)
+				window.draw(enemy2.sprite);
 		}
 		if (staircase == true) //either draw key only when map2 is active, or when key is collected
 			window.draw(key.sprite);
